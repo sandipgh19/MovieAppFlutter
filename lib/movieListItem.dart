@@ -10,24 +10,32 @@ class MovieListItem extends StatelessWidget {
     MovieItem movieItem = movieListItem[index];
     return Card(
       child: new Container(
+          constraints: BoxConstraints(minHeight: 100),
+          padding: EdgeInsets.only(left: 8.0),
           child: Row(children: [
-        Column(
-          children: [Text(movieItem.name)],
-        ),
-        Column(children: [
-          Text(movieItem.name),
-          Row(children: [
-            Text(movieItem.description),
-            Text(movieItem.description)
-          ]),
-          Row(
-            children: [
-            Text(movieItem.rating),
-            Text(getConvertedTime(movieItem.date)),
-            Text(movieItem.language)
-          ])
-        ])
-      ])),
+            Expanded(flex: 3, child: new Image.network("https://image.tmdb.org/t/p/w500"+movieItem.posterPath, fit: BoxFit.fill)),
+            Expanded(
+                flex: 7,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                     Padding(padding: const EdgeInsets.all(8.0), child: Text(movieItem.title)),
+                     Padding(padding: const EdgeInsets.all(8.0), child: 
+                      Row(children: [
+                        Expanded(child: Text(movieItem.overview, overflow: TextOverflow.ellipsis, maxLines: 6), flex: 8),
+                        Expanded(child: Icon(Icons.navigate_next), flex: 2)
+                      ],)),
+                      Padding(padding: const EdgeInsets.all(8.0), child:
+                      Row(children: [
+                        Expanded(child: Text(movieItem.voteAverage.toString()), flex: 2),
+                        Expanded(
+                            child: Text(getConvertedTime(movieItem.releaseDate)),
+                            flex: 6),
+                        Expanded(child: Text(movieItem.originalLanguage), flex: 2)
+                      ]))
+                    ]))
+          ])),
     );
   }
 
@@ -39,8 +47,35 @@ class MovieListItem extends StatelessWidget {
     );
   }
 
-  String getConvertedTime(int timeStamp) {
-    var date = DateTime.fromMillisecondsSinceEpoch(timeStamp * 1000);
-    return DateFormat("d MMMM y").format(date);
+  String getConvertedTime(String timeStamp) {
+    try {
+      DateFormat format = DateFormat("y-MM-d");
+      DateTime date = format.parse(timeStamp);
+      String suffix = getDayNumberSuffix(date.day);
+      return DateFormat("d'$suffix' MMMM y").format(date);
+    }catch(e) {
+      return timeStamp;
+    }
+    
   }
-} 
+
+  String getDayNumberSuffix(int day) {
+    if(day>= 11 && day <=13) {
+      return "th";
+    }
+
+    switch(day%10) {
+      case 1: 
+      return "st";
+      break;
+      case 2: 
+      return "nd";
+      break;
+      case 3:
+      return "rd";
+      default:
+      return "th";
+    }
+
+  }
+}

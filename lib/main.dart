@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app_flutter/blocs/movie_bloc.dart';
 import 'package:movie_app_flutter/movieItem.dart';
 import 'package:movie_app_flutter/movieListItem.dart';
+import 'package:movie_app_flutter/networking/Repsonse.dart';
 
 void main() {
   runApp(MyApp());
@@ -52,18 +54,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-    List<MovieItem> _movies = [];
+    MovieBloc _bloc;
 
     @override
   void initState() {
     super.initState();
-    _movies.add(MovieItem("name1", "Description", "4.3", "null", "EN", "3.2", "4.3", 1608910800));
-    _movies.add(MovieItem("name2", "Description", "4.3", "null", "EN", "3.2", "4.3", 1608910800));
-    _movies.add(MovieItem("name3", "Description", "4.3", "null", "EN", "3.2", "4.3", 1608910800));
-    _movies.add(MovieItem("name4", "Description", "4.3", "null", "EN", "3.2", "4.3", 1608910800));
-
+    _bloc = MovieBloc();
   }
-
+ 
+ @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,29 +82,92 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Expanded(child: MovieListItem(_movies))
-          ],
-        ),
+      body: RefreshIndicator(
+        onRefresh: () => _bloc.fetchMovieItemList(),
+        child: StreamBuilder<Response<MovieItemResponse>> (
+          stream: _bloc.chuckDataStream,
+          builder: (context, snapshot) {
+            if(snapshot.hasData) {
+              switch (snapshot.data.status) {
+                case Status.LOADING:
+                  return Loading(loadingMessage: snapshot.data.message);
+                  break;
+                case Status.SUCCESS:
+                  return MovieListItem(snapshot.data.data.results);
+                  break;
+                case Status.ERROR:
+                  return Error(
+                    errorMessage: snapshot.data.message,
+                    onRetryPressed: () => _bloc.fetchMovieItemList(),
+                  );
+                  break;
+              }
+            }
+            return Container();
+          },
+        ),)
+    );
+  }
+}
+
+class Loading extends StatelessWidget {
+  final String loadingMessage;
+
+  const Loading({Key key, this.loadingMessage}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            loadingMessage,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.blue,
+              fontSize: 24,
+            ),
+          ),
+          SizedBox(height: 24),
+          CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Error extends StatelessWidget {
+  final String errorMessage;
+
+  final Function onRetryPressed;
+
+  const Error({Key key, this.errorMessage, this.onRetryPressed})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text(
+            errorMessage,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+            ),
+          ),
+          SizedBox(height: 8),
+          RaisedButton(
+            color: Colors.white,
+            child: Text('Retry', style: TextStyle(color: Colors.black)),
+            onPressed: onRetryPressed,
+          )
+        ],
       ),
     );
   }
