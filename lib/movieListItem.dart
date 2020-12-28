@@ -11,7 +11,7 @@ class MovieListItem extends StatelessWidget {
     return Card(
       child: new Container(
           constraints: BoxConstraints(minHeight: 100),
-          padding: EdgeInsets.only(left: 8.0),
+          padding: EdgeInsets.only(left: 4.0),
           child: Row(children: [
             Expanded(flex: 3, child: new Image.network("https://image.tmdb.org/t/p/w500"+movieItem.posterPath, fit: BoxFit.fill)),
             Expanded(
@@ -20,13 +20,13 @@ class MovieListItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                     Padding(padding: const EdgeInsets.all(8.0), child: Text(movieItem.title)),
-                     Padding(padding: const EdgeInsets.all(8.0), child: 
+                     Padding(padding: const EdgeInsets.fromLTRB(8.0, 0.0, 4.0, 4.0), child: Text(movieItem.title)),
+                     Padding(padding: const EdgeInsets.fromLTRB(8.0, 4.0, 4.0, 4.0), child: 
                       Row(children: [
                         Expanded(child: Text(movieItem.overview, overflow: TextOverflow.ellipsis, maxLines: 6), flex: 8),
                         Expanded(child: Icon(Icons.navigate_next), flex: 2)
                       ],)),
-                      Padding(padding: const EdgeInsets.all(8.0), child:
+                      Padding(padding: const EdgeInsets.fromLTRB(8.0, 4.0, 4.0, 4.0), child:
                       Row(children: [
                         Expanded(child: Text(movieItem.voteAverage.toString()), flex: 2),
                         Expanded(

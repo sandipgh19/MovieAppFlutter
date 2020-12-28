@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:movie_app_flutter/movieItem.dart';
-import 'package:movie_app_flutter/networking/Repsonse.dart';
-import 'package:movie_app_flutter/repository/AppRepository.dart';
+import 'package:movie_app_flutter/networking/repsonse.dart';
+import 'package:movie_app_flutter/repository/app_repository.dart';
 
 class MovieBloc {
   ChuckRepository _appRepository;

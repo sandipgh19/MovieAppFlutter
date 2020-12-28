@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app_flutter/blocs/movie_bloc.dart';
 import 'package:movie_app_flutter/movieItem.dart';
 import 'package:movie_app_flutter/movieListItem.dart';
-import 'package:movie_app_flutter/networking/Repsonse.dart';
+import 'package:movie_app_flutter/networking/repsonse.dart';
 
 void main() {
   runApp(MyApp());

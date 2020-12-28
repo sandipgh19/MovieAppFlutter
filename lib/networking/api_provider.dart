@@ -3,16 +3,24 @@ import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
 
-import 'package:movie_app_flutter/networking/CustomException.dart';
+import 'package:movie_app_flutter/networking/custom_exception.dart';
 
-class ApiProvider {
+abstract class ApiProvider<ResultType, RequestType> {
   final String _baseUrl = "https://api.themoviedb.org/3/";
+
+  ApiProvider() {
+    if(shouldFetch()) {
+
+    }else{
+       loadFromDb();
+     }
+  }
 
   Future<dynamic> get(String url) async {
     var responseJson;
     try {
-      final response = await http.get(_baseUrl + url);
-      responseJson = _response(response);
+        final response = await http.get(_baseUrl + url);
+        responseJson = _response(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');
     }
@@ -26,16 +34,23 @@ class ApiProvider {
         print(responseJson);
         return responseJson;
       case 400:
-        throw BadRequestException(response.body.toString());
+        throw BadRequestException(response.body.toString(), loadFromDb());
       case 401:
 
       case 403:
-        throw UnauthorisedException(response.body.toString());
+        throw UnauthorisedException(response.body.toString(), loadFromDb());
       case 500:
 
       default:
         throw FetchDataException(
-            'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
+            'Error occured while Communication with Server with StatusCode : ${response.statusCode}', loadFromDb());
     }
   }
+
+  
+ void saveCallResult(RequestType item);
+ bool shouldFetch();
+ ResultType loadFromDb();
+ RequestType createCall();
+
 }

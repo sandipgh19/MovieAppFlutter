@@ -1,16 +1,25 @@
-class Response<T> {
-  Status status;
-  T data;
-  String message;
+import 'package:flutter/material.dart';
 
-  Response.loading(this.message) : status = Status.LOADING;
-  Response.success(this.data) : status = Status.SUCCESS;
-  Response.error(this.message) : status = Status.ERROR;
+class Resource<T> {
+  
+  final Status status;
+  final T data;
+  final String message;
+  final Exception error;
 
-  @override
-  String toString() {
-    return "Status : $status \n Message : $message \n Data : $data";
-  }
+  const Resource({this.data, @required this.status, this.message, this.error});
+
+  static Resource<T> loading<T>({T data}) =>
+      Resource<T>(data: data, status: Status.loading);
+
+  static Resource<T> failed<T>({Exception error, T data}) => Resource<T>(
+      error: error, data: data, status: Status.failed);
+
+  static Resource<T> success<T>({T data}) =>
+      Resource<T>(data: data, status: Status.success);
+  
 }
 
-enum Status { LOADING, SUCCESS, ERROR }
+enum Status{
+  loading, success, failed
+}
