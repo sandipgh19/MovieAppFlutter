@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app_flutter/blocs/movie_bloc.dart';
-import 'package:movie_app_flutter/movieItem.dart';
-import 'package:movie_app_flutter/movieListItem.dart';
-import 'package:movie_app_flutter/networking/repsonse.dart';
+import 'package:movie_app_flutter/movie_response.dart';
 
 void main() {
   runApp(MyApp());
@@ -84,24 +82,24 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: RefreshIndicator(
         onRefresh: () => _bloc.fetchMovieItemList(),
-        child: StreamBuilder<Response<MovieItemResponse>> (
-          stream: _bloc.chuckDataStream,
+        child: StreamBuilder<MovieItemResponse> (
+          // stream: _bloc.chuckDataStream,
           builder: (context, snapshot) {
             if(snapshot.hasData) {
-              switch (snapshot.data.status) {
-                case Status.LOADING:
-                  return Loading(loadingMessage: snapshot.data.message);
-                  break;
-                case Status.SUCCESS:
-                  return MovieListItem(snapshot.data.data.results);
-                  break;
-                case Status.ERROR:
-                  return Error(
-                    errorMessage: snapshot.data.message,
-                    onRetryPressed: () => _bloc.fetchMovieItemList(),
-                  );
-                  break;
-              }
+              // switch (snapshot.data.status) {
+              //   case Status.LOADING:
+              //     return Loading(loadingMessage: snapshot.data.message);
+              //     break;
+              //   case Status.SUCCESS:
+              //     return MovieListItem(snapshot.data.data.results);
+              //     break;
+              //   case Status.ERROR:
+              //     return Error(
+              //       errorMessage: snapshot.data.message,
+              //       onRetryPressed: () => _bloc.fetchMovieItemList(),
+              //     );
+              //     break;
+              // }
             }
             return Container();
           },

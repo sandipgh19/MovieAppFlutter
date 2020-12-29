@@ -34,16 +34,16 @@ abstract class ApiProvider<ResultType, RequestType> {
         print(responseJson);
         return responseJson;
       case 400:
-        throw BadRequestException(response.body.toString(), loadFromDb());
+        throw BadRequestException(response.body.toString());
       case 401:
 
       case 403:
-        throw UnauthorisedException(response.body.toString(), loadFromDb());
+        throw UnauthorisedException(response.body.toString());
       case 500:
 
       default:
         throw FetchDataException(
-            'Error occured while Communication with Server with StatusCode : ${response.statusCode}', loadFromDb());
+            'Error occured while Communication with Server with StatusCode : ${response.statusCode}');
     }
   }
 
