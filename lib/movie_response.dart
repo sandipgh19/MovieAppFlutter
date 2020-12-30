@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:movie_app_flutter/data/movie_data_item.dart';
+import 'package:movie_app_flutter/database/moor_db.dart';
 
 MovieItemResponse movieItemResponseFromJson(String str) => MovieItemResponse.fromJson(json.decode(str));
 
@@ -15,20 +15,20 @@ class MovieItemResponse {
     });
 
     int page;
-    List<MovieItem> results;
+    List<MovieItemData> results;
     int totalPages;
     int totalResults;
 
     factory MovieItemResponse.fromJson(Map<String, dynamic> json) => MovieItemResponse(
         page: json["page"],
-        // results: List<MovieItem>.from(json["results"].map((x) => MovieItem.fromJson(x))),
+        results: List<MovieItemData>.from(json["results"].map((x) => MovieItemData.fromJson(x))),
         totalPages: json["total_pages"],
         totalResults: json["total_results"],
     );
 
     Map<String, dynamic> toJson() => {
         "page": page,
-        // "results": List<dynamic>.from(results.map((x) => x.toJson())),
+        "results": List<dynamic>.from(results.map((x) => x.toJson())),
         "total_pages": totalPages,
         "total_results": totalResults,
     };

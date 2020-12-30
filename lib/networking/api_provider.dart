@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:movie_app_flutter/data/constant.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:async';
@@ -6,7 +7,6 @@ import 'dart:async';
 import 'package:movie_app_flutter/networking/custom_exception.dart';
 
 abstract class ApiProvider<ResultType, RequestType> {
-  final String _baseUrl = "https://api.themoviedb.org/3/";
 
   ApiProvider() {
     if(shouldFetch()) {
@@ -19,7 +19,7 @@ abstract class ApiProvider<ResultType, RequestType> {
   Future<dynamic> get(String url) async {
     var responseJson;
     try {
-        final response = await http.get(_baseUrl + url);
+        final response = await http.get(Constant.baseURL + url);
         responseJson = _response(response);
     } on SocketException {
       throw FetchDataException('No Internet connection');

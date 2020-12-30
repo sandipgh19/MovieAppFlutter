@@ -1,16 +1,29 @@
 
+import 'package:injectable/injectable.dart';
+import 'package:movie_app_flutter/data/movie_data_item.dart';
+import 'package:movie_app_flutter/data/movie_item_dao.dart';
+import 'package:movie_app_flutter/database/moor_db.dart';
+import 'package:movie_app_flutter/helpers/network_bound_resource.dart';
+import 'package:movie_app_flutter/helpers/resoursce.dart';
+import 'package:movie_app_flutter/movie_list/movie_list_local_data_source.dart';
+import 'package:movie_app_flutter/movie_list/movie_list_remote_data_source.dart';
+import 'package:movie_app_flutter/movie_response.dart';
+
+@injectable
 class AppRepository {
 
-var apiKey = "153625bb97b19df233040bf26f3399ab";
+  final MovieListRemoteDataSource _remoteDataSource;
+  final MovieListLocalDataSource _localDataSource;
 
-  // Stream<Resource<List<MovieItem>>> fetchMovieList() {
-    // return NetworkBoundResource<List<MovieItem>,List<MovieItem>>()
-    //   .asStream(
-    //     loadFromDb: _dao.allActiveToDoItemsStream,
-    //     shouldFetch: (data) => data == null || data.isEmpty,
-    //     createCall: _remoteDataSource.getToDoItemsFromApi(),
-    //     processResponse: (request) => request.toResult(),
-    //     saveCallResult: (result) => _dao.insertToDo(result);
-  // }
+  AppRepository(this._localDataSource, this._remoteDataSource);
+
+  Stream<Resource<List<MovieItemData>>> fetchMovieList() {
+    return NetworkBoundResources<List<MovieItemData>, MovieItemResponse>()
+      .asStream(
+        loadFromDb: _localDataSource.allMovieItemsStream,
+        shouldFetch: (data) => data == null || data.isEmpty,
+        createCall: _remoteDataSource.fetchMovieList,
+        saveCallResult: (result) => _localDataSource.saveMovieItemList(result.results));
+  }
 
 }

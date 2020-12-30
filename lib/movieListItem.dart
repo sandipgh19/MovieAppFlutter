@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'data/movie_data_item.dart';
+import 'data/movie_item_dao.dart';
 
 class MovieListItem extends StatelessWidget {
   final List<MovieItem> movieListItem;

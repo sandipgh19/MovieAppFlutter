@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:injectable/injectable.dart';
 import 'package:movie_app_flutter/repository/app_repository.dart';
 
+@injectable
 class MovieBloc {
   AppRepository _appRepository;
   StreamController _movieDataController;

@@ -33,6 +33,9 @@ dependencies:
     sdk: flutter
   moor_flutter: ^3.1.0
   cupertino_icons: ^1.0.0
+  path_provider: ^1.6.11
+  injectable: ^0.4.0
+  moor_ffi: ^0.8.0
 
 dev_dependencies:
   flutter_test:
