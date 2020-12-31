@@ -1,7 +1,5 @@
 
 import 'package:injectable/injectable.dart';
-import 'package:movie_app_flutter/data/movie_data_item.dart';
-import 'package:movie_app_flutter/data/movie_item_dao.dart';
 import 'package:movie_app_flutter/database/moor_db.dart';
 import 'package:movie_app_flutter/helpers/network_bound_resource.dart';
 import 'package:movie_app_flutter/helpers/resoursce.dart';
@@ -23,6 +21,7 @@ class AppRepository {
         loadFromDb: _localDataSource.allMovieItemsStream,
         shouldFetch: (data) => data == null || data.isEmpty,
         createCall: _remoteDataSource.fetchMovieList,
+        processResponse: (result)=>  result?.results?.map<MovieItemData>((e) => e.toTable())?.toList(),
         saveCallResult: (result) => _localDataSource.saveMovieItemList(result.results));
   }
 

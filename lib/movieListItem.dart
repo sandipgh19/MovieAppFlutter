@@ -1,39 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_app_flutter/database/moor_db.dart';
 
-import 'data/movie_item_dao.dart';
 
 class MovieListItem extends StatelessWidget {
-  final List<MovieItem> movieListItem;
+  final List<MovieItemData> movieListItem;
   MovieListItem(this.movieListItem);
 
   Widget _buildMovieItem(BuildContext context, int index) {
-    MovieItem movieItem = movieListItem[index];
+    MovieItemData movieItem = movieListItem[index];
     return Card(
       child: new Container(
           constraints: BoxConstraints(minHeight: 100),
           padding: EdgeInsets.only(left: 4.0),
           child: Row(children: [
-            Expanded(flex: 3, child: new Image.network("https://image.tmdb.org/t/p/w500"+movieItem.posterPath.toString(), fit: BoxFit.fill)),
+            Expanded(flex: 3, child: new Image.network("https://image.tmdb.org/t/p/w500"+movieItem.posterPath, fit: BoxFit.fill)),
             Expanded(
                 flex: 7,
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                     Padding(padding: const EdgeInsets.fromLTRB(8.0, 0.0, 4.0, 4.0), child: Text(movieItem.title.toString())),
+                     Padding(padding: const EdgeInsets.fromLTRB(8.0, 0.0, 4.0, 4.0), child: Text(movieItem.title)),
                      Padding(padding: const EdgeInsets.fromLTRB(8.0, 4.0, 4.0, 4.0), child: 
                       Row(children: [
-                        Expanded(child: Text(movieItem.overview.toString(), overflow: TextOverflow.ellipsis, maxLines: 6), flex: 8),
+                        Expanded(child: Text(movieItem.overview, overflow: TextOverflow.ellipsis, maxLines: 6), flex: 8),
                         Expanded(child: Icon(Icons.navigate_next), flex: 2)
                       ],)),
                       Padding(padding: const EdgeInsets.fromLTRB(8.0, 4.0, 4.0, 4.0), child:
                       Row(children: [
                         Expanded(child: Text(movieItem.voteAverage.toString()), flex: 2),
                         Expanded(
-                            child: Text(getConvertedTime(movieItem.releaseDate.toString())),
+                            child: Text(getConvertedTime(movieItem.releaseDate)),
                             flex: 6),
-                        Expanded(child: Text(movieItem.originalLanguage.toString()), flex: 2)
+                        Expanded(child: Text(movieItem.originalLanguage), flex: 2)
                       ]))
                     ]))
           ])),

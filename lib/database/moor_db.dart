@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:injectable/injectable.dart';
-import 'package:moor_flutter/moor_flutter.dart';
+import 'package:moor/moor.dart';
 import 'package:movie_app_flutter/data/movie_item_dao.dart';
 import 'package:movie_app_flutter/data/movie_data_item.dart';
 import 'package:path_provider/path_provider.dart';

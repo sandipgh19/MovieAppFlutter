@@ -1,13 +1,14 @@
-import 'dart:async';
 
 import 'package:injectable/injectable.dart';
+import 'package:movie_app_flutter/database/moor_db.dart';
+import 'package:movie_app_flutter/helpers/resoursce.dart';
 import 'package:movie_app_flutter/repository/app_repository.dart';
 
 @injectable
 class MovieBloc {
-  AppRepository _appRepository;
-  StreamController _movieDataController;
-  bool _isStreaming;
+  final AppRepository _appRepository;
+  // StreamController _movieDataController;
+  // bool _isStreaming;
 
   // StreamSink<Response<MovieItemResponse>> get chuckDataSink =>
   //     _movieDataController.sink;
@@ -15,26 +16,19 @@ class MovieBloc {
   // Stream<Response<MovieItemResponse>> get chuckDataStream =>
   //     _movieDataController.stream;
 
-  MovieBloc() {
-    // _movieDataController = StreamController<Response<MovieItemResponse>>();
-    _appRepository = AppRepository();
-    _isStreaming = true;
-    fetchMovieItemList();
-  }
+  MovieBloc(this._appRepository);
 
-  fetchMovieItemList() async {
-    // chuckDataSink.add(Response.loading('Getting a Chucky joke!'));
-    try {
-      // MovieItemResponse chuckJoke = await _appRepository.fetchMovieList();
-      // if (_isStreaming) chuckDataSink.add(Response.success(chuckJoke));
-    } catch (e) {
-      // if (_isStreaming) chuckDataSink.add(Response.error(e.toString()));
-      print(e);
-    }
-  }
+   Future<void> fetchMovieListCallback() =>
+      Future.delayed(Duration.zero, () => _appRepository.fetchMovieList());
+
+  Stream<Resource<List<MovieItemData>>> fetchMovieList(){
+
+      return _appRepository.fetchMovieList();
+  } 
+
 
   dispose() {
-    _isStreaming = false;
-    _movieDataController?.close();
+    // _isStreaming = false;
+    // _movieDataController?.close();
   }
 }

@@ -87,7 +87,6 @@ class NetworkBoundResources<ResultType, RequestType> {
       Future<RequestType> Function() createCall,
       Future Function(RequestType item) saveCallResult,
       ResultType unconfirmedResult) async {
-    saveCallResult(unconfirmedResult as RequestType);
     return await createCall().then((value) async {
       if(value != unconfirmedResult) {
         await saveCallResult(value);

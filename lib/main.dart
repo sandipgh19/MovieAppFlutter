@@ -1,8 +1,14 @@
+
 import 'package:flutter/material.dart';
 import 'package:movie_app_flutter/blocs/movie_bloc.dart';
-import 'package:movie_app_flutter/movie_response.dart';
+import 'package:movie_app_flutter/database/moor_db.dart';
+import 'package:movie_app_flutter/di/di.dart';
+import 'package:movie_app_flutter/helpers/resoursce.dart';
+import 'package:movie_app_flutter/movieListItem.dart';
+
 
 void main() {
+  configureInjection();
   runApp(MyApp());
 }
 
@@ -52,12 +58,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-    MovieBloc _bloc;
+  final _bloc = getIt.get<MovieBloc>();
 
-    @override
+
+  @override
   void initState() {
     super.initState();
-    _bloc = MovieBloc();
   }
  
  @override
@@ -81,25 +87,25 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: RefreshIndicator(
-        onRefresh: () => _bloc.fetchMovieItemList(),
-        child: StreamBuilder<MovieItemResponse> (
-          // stream: _bloc.chuckDataStream,
+        onRefresh: () => _bloc.fetchMovieListCallback(),
+        child: StreamBuilder<Resource<List<MovieItemData>>> (
+          stream: _bloc.fetchMovieList(),
           builder: (context, snapshot) {
             if(snapshot.hasData) {
-              // switch (snapshot.data.status) {
-              //   case Status.LOADING:
-              //     return Loading(loadingMessage: snapshot.data.message);
-              //     break;
-              //   case Status.SUCCESS:
-              //     return MovieListItem(snapshot.data.data.results);
-              //     break;
-              //   case Status.ERROR:
-              //     return Error(
-              //       errorMessage: snapshot.data.message,
-              //       onRetryPressed: () => _bloc.fetchMovieItemList(),
-              //     );
-              //     break;
-              // }
+              switch (snapshot.data.status) {
+                case Status.LOADING:
+                  return Loading(loadingMessage: "Loading");
+                  break;
+                case Status.SUCCESS:
+                  return MovieListItem(snapshot.data.data);
+                  break;
+                case Status.ERROR:
+                  return Error(
+                    errorMessage: "Error",
+                    onRetryPressed: () => _bloc.fetchMovieListCallback(),
+                  );
+                  break;
+              }
             }
             return Container();
           },
