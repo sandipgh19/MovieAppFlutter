@@ -15,6 +15,11 @@ class MovieListLocalDataSource {
 
   Stream<List<MovieItemData>> allMovieItemsStream() =>  _movieDao.allActiveToDoItemsStream;
 
+  Future<MovieItemData> getMovieItemStream(int id) {
+    return  _movieDao.movieItemsStream(id);
+  }
+
+
   Future<void> saveMovieItemList(List<Result> items) async {
     return await _movieDao.insertToDoList(items.map<MovieItemData>((e) => e.toTable()).toList());
   }

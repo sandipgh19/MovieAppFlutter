@@ -64,7 +64,7 @@ class NetworkBoundResources<ResultType, RequestType> {
               sink.add(Resource.success(data: processResponse(result)));
             } on Exception catch (e) {
               print("Fetching failed");
-              sink.addError(Resource.failed(data: null, error: e));
+              sink.addError(Resource.failed(data: event, error: e));
             }
           } else {
             print("Fetching data its not necessary");

@@ -60,18 +60,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final _bloc = getIt.get<MovieBloc>();
 
-
-  @override
-  void initState() {
-    super.initState();
-  }
- 
- @override
-  void dispose() {
-    _bloc.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done

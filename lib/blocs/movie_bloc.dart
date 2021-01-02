@@ -21,14 +21,8 @@ class MovieBloc {
    Future<void> fetchMovieListCallback() =>
       Future.delayed(Duration.zero, () => _appRepository.fetchMovieList());
 
-  Stream<Resource<List<MovieItemData>>> fetchMovieList(){
+  Stream<Resource<List<MovieItemData>>> fetchMovieList() => _appRepository.fetchMovieList();
 
-      return _appRepository.fetchMovieList();
-  } 
+  Future<MovieItemData> localMovieData(int id) => _appRepository.localMovieData(id);
 
-
-  dispose() {
-    // _isStreaming = false;
-    // _movieDataController?.close();
-  }
 }

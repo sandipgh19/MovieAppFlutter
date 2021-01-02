@@ -16,4 +16,7 @@ class MovieItemDao extends DatabaseAccessor<MoorDB> with _$MovieItemDaoMixin {
     return await batch((batch) =>
         batch.insertAll(movieItem, entries, mode: InsertMode.insertOrReplace));
   }
+
+  Future<MovieItemData> movieItemsStream(int id) async =>
+      (select(movieItem)..where((g) => g.id.equals(id))).watchSingle().last;
 }
