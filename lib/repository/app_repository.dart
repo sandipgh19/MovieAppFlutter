@@ -25,6 +25,6 @@ class AppRepository {
         saveCallResult: (result) => _localDataSource.saveMovieItemList(result.results));
   }
 
-  Future<MovieItemData> localMovieData(int id) => _localDataSource.getMovieItemStream(id);
+  Stream<MovieItemData> localMovieData(int id) => _localDataSource.getMovieItemStream(id);
 
 }

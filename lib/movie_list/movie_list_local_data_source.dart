@@ -15,7 +15,7 @@ class MovieListLocalDataSource {
 
   Stream<List<MovieItemData>> allMovieItemsStream() =>  _movieDao.allActiveToDoItemsStream;
 
-  Future<MovieItemData> getMovieItemStream(int id) {
+  Stream<MovieItemData> getMovieItemStream(int id) {
     return  _movieDao.movieItemsStream(id);
   }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_app_flutter/data/constant.dart';
 import 'package:movie_app_flutter/database/moor_db.dart';
+import 'package:movie_app_flutter/ui/movie_details.dart';
 
 
 class MovieListItem extends StatelessWidget {
@@ -10,11 +12,15 @@ class MovieListItem extends StatelessWidget {
   Widget _buildMovieItem(BuildContext context, int index) {
     MovieItemData movieItem = movieListItem[index];
     return Card(
+      child: new InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => MovieDetails(movieItem.id)));
+      },
       child: new Container(
           constraints: BoxConstraints(minHeight: 100),
           padding: EdgeInsets.only(left: 4.0),
           child: Row(children: [
-            Expanded(flex: 3, child: new Image.network("https://image.tmdb.org/t/p/w500"+movieItem.posterPath, fit: BoxFit.fill)),
+            Expanded(flex: 3, child: new Image.network(Constant.imageBaseURL+movieItem.posterPath, fit: BoxFit.fill)),
             Expanded(
                 flex: 7,
                 child: Column(
@@ -37,6 +43,7 @@ class MovieListItem extends StatelessWidget {
                       ]))
                     ]))
           ])),
+    )
     );
   }
 
