@@ -69,7 +69,22 @@ class MovieDetailsView extends StatelessWidget {
             new Container(
                 margin: EdgeInsets.all(10),
                 child: Text(movieItemData?.overview,
-                    style: TextStyle(color: Colors.black54, fontSize: 16)))
+                    style: TextStyle(color: Colors.black54, fontSize: 16))),
+
+            Row(children: [
+                        Expanded(child: Text(movieItemData?.originalTitle), flex: 2),
+                        Expanded(child: Text(Constant().convertionTime(movieItemData?.releaseDate)), flex: 2),
+                        Expanded(child: Text(movieItemData?.popularity?.toString()), flex: 6)
+
+                      ],),
+
+                       Row(children: [
+                        Expanded(child: Text(movieItemData?.releaseDate), flex: 8),
+                        Expanded(child: Text(movieItemData?.originalLanguage), flex: 2)
+
+                      ],)
+                    
+              
           ],
         )));
   }
